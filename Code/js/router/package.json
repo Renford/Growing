@@ -1,0 +1,26 @@
+{
+    "name": "router",
+    "version": "1.0.0",
+    "description": "Hello Koa2",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "keywords": [
+        "koa",
+        "async"
+    ],
+    "author": "renford",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://"
+    },
+    "dependencies": {
+        "koa": "^2.0.0",
+        "koa-bodyparser": "^3.2.0",
+        "koa-logger": "^3.1.0",
+        "koa-router": "^7.0.0",
+        "lodash": "^4.17.4"
+    }
+}
