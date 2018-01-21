@@ -51,3 +51,6 @@ app.listen(3000);
 console.log('app started at port 3000');
 
 ```
+
+5、运行，并在浏览器输入`localhost:3000`查看效果
+> node app

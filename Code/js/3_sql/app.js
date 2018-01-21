@@ -20,5 +20,6 @@ console.log('app started at port 3000');
 
 // todo 
 // 1、连接mysql、数据存储
-// 2、自动生成rest 文档
-// 
+// 2、错误处理
+// 3、自动生成rest 文档
+// 4、mocha测试模块

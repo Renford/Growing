@@ -1,3 +1,21 @@
+## 安装
+
+mysql: https://dev.mysql.com/downloads/mysql/
+可视化工具: https://dev.mysql.com/downloads/workbench/
+
+## 基本操作
+
+1、终端创建数据库
+
+> mysql -u root -p
+> CREATE DATABASE 库名;// ';'必须可少
+
+2、Sequlize定义model调用sync自动同步表头
+
+> sequlize.sync();
+
+## 重置root密码
+
 1、停止 mysql server 
 
 > '系统偏好设置' > MySQL > 'Stop MySQL Server'

@@ -60,6 +60,8 @@ save(module, exported);
 + mysql：数据库mysql驱动模块
 + sequelize：orm模块，直接操作mysql，[Sequelize官方文档](http://docs.sequelizejs.com)
 + lodash：专门处理数据转换、查找、匹配的模块，[lodash官方文档](https://lodash.com)
++ nunjucks: 数据模板引擎，[nunjucks官方文档](http://mozilla.github.io/nunjucks/)
++ node-uuid: 生成唯一标识码，可基于时间、随机数，[node-uuid官方文档](https://www.npmjs.com/package/node-uuid)
 
 4、koa
 
