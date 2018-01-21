@@ -1,13 +1,19 @@
 ## JavaScipt
 
-Project | Version | Article
----|---|---
-JavaScript | ECMAScript 6 | [JavaScript](./JavaScript/js_begin.md)
-node.js | 9.4.0 | [使用node.js+koa2创建HelloWorld](./JavaScript/nodejs_koa_hello.md)
+| Category | Version | Article |
+| :---: | :---: | --- |
+| JavaScript | ECMAScript 6 | [JavaScript资料收集篇](./JavaScript/js_begin.md) |
+| node.js | 9.4.0 | [使用node.js+koa2创建HelloWorld](./JavaScript/nodejs_koa_hello.md) |
 
 
 ## iOS
 
 ## mac
 
-[mysql重置root密码](./Mac/mac_pwd_reset.md)
+mac环境：mac os 10.13.2
+
+| Category | Version | Article |
+| :---: | :---: | --- |
+| mysql | 5.7.21 | [mysql操作纪要](./Mac/mac_mysql_tips.md) |
+
+

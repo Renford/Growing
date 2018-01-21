@@ -1,6 +1,8 @@
 
 const model = require('../models');
 
+const User = model.user;
+
 module.exports = async (ctx, next) => {
 
 	let user = await User.findAll({
@@ -18,7 +20,8 @@ module.exports = async (ctx, next) => {
 		});
 	}
  	
-	ctx.response.body = JSON.stringify(user);
+	// console.log('response user:', JSON.stringify(user))
 
-	console.log('user========', JSON.stringify(user));
+ 	ctx.response.type = 'json';
+	ctx.response.body = user;
 }

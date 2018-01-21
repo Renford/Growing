@@ -21,8 +21,6 @@ const mapDir = d => {
 		tree[dir] = mapDir(path.join(d, dir));
 	})
 
-    console.log('model tree=========', tree);
-
 	return tree;
 }
 
