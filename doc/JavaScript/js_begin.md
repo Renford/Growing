@@ -2,7 +2,7 @@
 ## 编译器
 
 + vim
-+ 文本编辑器，如 Sublime Text、Atom
++ 文本编辑器，如 Sublime Text、Atom、VS Code
 + IDE，如 WebStrom
 + 在线编辑，如 [jsbin](http://jsbin.com)
 
