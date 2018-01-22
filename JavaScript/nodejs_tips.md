@@ -1,52 +1,9 @@
-1、CommonJS规范
+1、javascript模块化
 
-在这个规范下，每个.js文件都是一个模块，它们内部各自使用的变量名和函数名都互不冲突，例如，hello.js和main.js都申明了全局变量var s = 'xxx'，但互不影响
-一个模块想要对外暴露变量（函数也是变量），可以用module.exports = variable;，一个模块要引用其他模块暴露的变量，用var ref = require('module_name');就拿到了引用模块的变量。
+ES6之前: CommonJS、AMD、CMD
+ES6之后: module(export+import)
 
-实现原理
-
-```
-var s = 'Hello';
-var name = 'world';
-
-console.log(s + ' ' + name + '!');
-```
-
-node.js加载后变成这样
-
-```
-(function () {
-    // 读取的hello.js代码:
-    var s = 'Hello';
-    var name = 'world';
-
-    console.log(s + ' ' + name + '!');
-    // hello.js代码结束
-})();
-```
-
-module.exports的实现原理
-
-```
-// 准备module对象:
-var module = {
-    id: 'hello',
-    exports: {}
-};
-var load = function (module) {
-    // 读取的hello.js代码:
-    function greet(name) {
-        console.log('Hello, ' + name + '!');
-    }
-
-    module.exports = greet;
-    // hello.js代码结束
-    return module.exports;
-};
-var exported = load(module);
-// 保存module:
-save(module, exported);
-```
+[javascript中的require、import与export](http://www.jb51.net/article/124442.htm)
 
 2、node.js的基本模块
 
@@ -58,10 +15,11 @@ save(module, exported);
 3、常用模块
 
 + mysql：数据库mysql驱动模块
-+ sequelize：orm模块，直接操作mysql，[Sequelize官方文档](http://docs.sequelizejs.com)
++ sequelize：orm模块，直接操作mysql，[Sequelize官方文档](http://docs.sequelizejs.com), [中文文档](https://github.com/demopark/sequelize-docs-Zh-CN)
 + lodash：专门处理数据转换、查找、匹配的模块，[lodash官方文档](https://lodash.com)
 + nunjucks: 数据模板引擎，[nunjucks官方文档](http://mozilla.github.io/nunjucks/)
 + node-uuid: 生成唯一标识码，可基于时间、随机数，[node-uuid官方文档](https://www.npmjs.com/package/node-uuid)
++ nodemon：启动服务器之后，修改文件自动重启服务，[nodemon官方文档](https://github.com/remy/nodemon)
 
 4、koa
 

@@ -2,10 +2,29 @@ const Sequelize = require('sequelize');
 const uuid = require('node-uuid');
 const config = require('../config.js');
 
+const Op = Sequelize.Op;
+const operatorsAliases = {
+  $gt: Op.gt,
+  $lt: Op.lt,
+  $not: Op.not,
+  $in: Op.in,
+  $notIn: Op.notIn,
+  $is: Op.is,
+  $like: Op.like,
+  $notLike: Op.notLike,
+  $between: Op.between,
+  $notBetween: Op.notBetween,
+  $and: Op.and,
+  $or: Op.or,
+  $any: Op.any,
+  $all: Op.all
+};
+
 // Sequelize自动添加属性createAt、updateAt、version
 const sequelize = new Sequelize(config.database, config.username, config.password, {
 	host: config.host,
 	dialect: 'mysql',
+	operatorsAliases,
 	pool: {
 		max: 5,
 		min: 0,
