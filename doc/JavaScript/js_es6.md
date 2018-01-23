@@ -86,6 +86,39 @@ function(x){
 }
 ```
 
+## Symbol
+1、ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值。解决属性名冲突的问题。可以转换成String、Boolean，但不能转换成number
+
+```
+Symbol.for("bar") === Symbol.for("bar")
+// true
+
+Symbol("bar") === Symbol("bar")
+// false
+```
+
+2、单例
+```
+const FOO_KEY = Symbol.for('foo');
+
+function A() {
+  this.foo = 'hello';
+}
+
+if (!global[FOO_KEY]) {
+  global[FOO_KEY] = new A();
+}
+
+module.exports = global[FOO_KEY];
+```
+
+3、内置的Symbol值
+
++ Symbol.hasInstance 对象的instanceof就是通过这个实现的
++ Symbol.isConcatSpreadable 等于一个布尔值，表示该对象用于Array.prototype.concat()时，是否可以展开
++ Symbol.species 指向一个构造函数。创建衍生对象时，会使用该属性。
++ Symbol.match 等价于String.prototype.math
+
 
 JavaScript的服务器运行环境：node
 ES6的转码器：Babel，可以将 ES6 代码转为 ES5 代码

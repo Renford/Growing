@@ -12,6 +12,7 @@
 | --- | --- | --- |
 | JavaScript 官网 | https://www.javascript.com | JavaScript的官网 |
 | ECMAScript 6 入门 | http://es6.ruanyifeng.com | 简单易懂、结构清晰 |
+| ECMAScript® 2015 Language Specification | www.ecma-international.org/ecma-262/6.0/ | 最权威的ES6规格文件 |
 | JavaScript 全栈教程 | https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000 | 前后兼有、测试方便 |
 | Node.js 中文网 | http://nodejs.cn/api/ | 支持搜索、API详尽 |
 | Koa中文文档 | https://wohugb.gitbooks.io/koajs/content/index.html | koa及其常用模块api |
