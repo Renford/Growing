@@ -25,6 +25,6 @@ console.log('app started at port 3000');
 // ==1、连接mysql、数据存储
 // ==2、错误处理
 // ==3、格式化输出、输出关键log
-// 4、模块化使用es6规范
+// 4、模块化使用es6规范，nodejs实现不方便，暂不使用
 // 5、自动生成rest 文档
 // 6、mocha测试模块
