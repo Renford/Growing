@@ -8,6 +8,9 @@
 
 ![信号源RACStream](./res/3th_rac_stream.jpg)
 
++ RACSequence: 是ReactiveCocoa里面的集合类，主要用来做数据处理
++ RACSignal: RAC的核心，
+
 + 冷信号：被动的，只有当你订阅的时候，它才会发布消息，只能一对一，当有不同的订阅者，消息是重新完整发送。
 + 热信号：主动的，即使没有订阅事件，但是它会时刻推送，可以有多个订阅者，是一对多，集合可以与订阅者共享信息
 
@@ -83,9 +86,36 @@ RACUnit、RACEvent、RACChannel --> RACKVOChannel、RACBlockTrampoline、RACKVOP
 - (RACSignal *)replayLazily;
 ```
 
-2. RAC中的RACObserver和KVO有什么区别
+2. RAC中的RACObserve和KVO有什么区别
 
-# 2、SDWebImage
+RACObserve最终还是通过NSObject的KVO实现的，只是添加了信号特征，更方便RAC的使用。RACObserve的实现层级为：
+
+```
+NSObject+RACPropertySubscribing
+NSObject+RACKVOWrapper
+RACKVOTrampoline
+RACKVOProxy
+```
+
+3. RAC如何实现双向绑定？
+
+通过RACChannel，由两个相互订阅的并发信号组成。方便使用的宏 `RACChannelTo`
+
+```
+RACChannelTo(view, property) = RACChannelTo(model, property);
+```
+
+# 2、AFNetworking
+
+AFNetworking 是基于NSURLSessionTask进行封装，支持https，网络数据请求，文件上传，文件下载，监听手机网络状态。数据传递主要使用block 和 notifacation的方式。
+
++ AFURLSessionManager：对网络请求进行管理
++ AFURLRequestSerialization：对网络请求的Request进行封装
++ AFURLReponseSerialization：对响应体Reponse进行处理
++ AFSecurityPolicy：对服务器证书进行校验
++ AFHTTPSessionManager：继承AFURLSessionManager，包含AFURLRequestSerialization、AFURLReponseSerialization、AFSecurityPolicy，封装了http的get、post、put、delete
+
+# 3、SDWebImage
 
 1. 缓存
 

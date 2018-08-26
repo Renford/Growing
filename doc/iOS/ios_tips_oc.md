@@ -160,7 +160,7 @@ NSOperationQueue可以通过调整权重调整队列的执行顺序
 
 + 当进行文件读写的时候，使用 pthread_rwlock 较好，文件读写通常会消耗大量资源，而使用互斥锁同时读文件的时候会阻塞其他读文件线程，而 pthread_rwlock 不会。
 + 当性能要求较高时候，可以使用 pthread_mutex 或者 dispath_semaphore，由于 OSSpinLock 不能很好的保证线程安全，而在只有在 iOS10 中才有 os_unfair_lock ，所以，前两个是比较好的选择。既可以保证速度，又可以保证线程安全。
-+ 对于 NSLock 及其子类，速度来说 NSLock < NSCondition < NSRecursiveLock < NSConditionLock 。
++ 对于 NSLock 及其子类，速度来说 NSLock > NSCondition > NSRecursiveLock > NSConditionLock 。
 
 ## 3.4 常见问题
 
@@ -245,24 +245,22 @@ objc_object（实例对象，即对象）中的 isa 指向的结构是 Class，�
 
 ## 4.2 消息传递
 
-1. 基本消息传递
++ 基本消息传递
 
-```
 objc_msgSend函数的调用过程
-1、监测selector是否要被忽略
-2、监测target是否为nil
-3、区分实例方法和类方法
+1. 监测selector是否要被忽略
+2. 监测target是否为nil
+3. 区分实例方法和类方法
     实例方法：首先在自身 isa 指向类的 methordLists 中查找该方法，如果没有，则从父类的 methordList 中查找，直到根类
     类方法：首先从自身 isa 指向的metaclass 的 methordList 中查找该方法，如果没有，则从super_class指向的父类的 metaclass 的 methorList中 查找，直到根类的metaclass
-4、如果都找不到，进入动态分析过程
-```
+4. 如果都找不到，进入动态分析过程
 
-2. [消息动态解析](https://blog.csdn.net/xiaozhuanddapang/article/details/62336072)
-
-  1. 动态方法解析，征询接收者，看其是否能动态添加方法，来处理当前这个未知的Selector(resolveInstanceMethod)
-  2. 进入消息转发流程重定向(forwardingTargetForSelector)
-  3. 生成方法签名，然后系统用这个方法签名生成NSInvocation对象(methodSignatureForSelector)
-  4. 改变Selector(forwardInvocation)
++ [消息动态解析](https://blog.csdn.net/xiaozhuanddapang/article/details/62336072)
+ 
+1. 动态方法解析，征询接收者，看其是否能动态添加方法，来处理当前这个未知的Selector(resolveInstanceMethod)
+2. 进入消息转发流程重定向(forwardingTargetForSelector)
+3. 生成方法签名，然后系统用这个方法签名生成NSInvocation对象(methodSignatureForSelector)
+4. 改变Selector(forwardInvocation)
 
 ![消息动态解析](https://www.ianisme.com/wp-content/uploads/2016/01/objective-runtime-6.png)
 
@@ -290,7 +288,7 @@ typedef struct category_t {
 ```
 从category的定义也可以看出，可以添加实例方法，类方法，属性，实现协议，但是无法添加实例变量。
 
-> 如果Category和原来的类都有方法MethodA，那么category附加完成，类的方法列表会有两个 MethodA 方法，只是category 的 methodA 放在 原理类的 methodA 的前边 
+> 如果Category和原来的类都有方法MethodA，那么category附加完成，类的方法列表会有两个 MethodA 方法，只是category 的 methodA 放在原来类的 methodA 的前边 
 
 2. 作用
 
@@ -307,6 +305,8 @@ typedef struct category_t {
 + Category：运行期决议，不可以添加实例变量。因为在运行期，对象的内存布局已经确定，如果添加实例变量就会破坏类的内部布局，这对编译型语言来说是灾难性的
 
 # 5、[Block](https://blog.ibireme.com/2013/11/27/objc-block/)
+
+block的实现原理是C语言的函数指针，即函数在内存中的地址,通过这个地址可以达到调用函数的目的。Block是NSObject的子类,拥有NSObject的所有属性,所以block对象也有自己的生命周期,生存期间也会被持有和释放。栈上的 block 在 ARC 下会自动复制到堆上
 
 ## 5.1 Block的数据结构
 
@@ -350,8 +350,6 @@ typedef void (^AAACompletionHandler)(NSData *data, NSError *error);
 ```
 
 ## 5.3 Block的种类
-
-block的实现原理是C语言的函数指针，函数在内存中的地址,通过这个地址可以达到调用函数的目的。Block是NSObject的子类,拥有NSObject的所有属性,所以block对象也有自己的生命周期,生存期间也会被持有和释放。栈上的 block 在 ARC 下会自动复制到堆上
 
 1. NSGlobalBlock，静态区block
 
@@ -494,6 +492,8 @@ autorelease 和 autorelease pool
 + autorelease：把对象放到离自己最近的自动释放池，当自动释放池销毁的时候才会release
 + autorelease pool：只有栈顶的池子是活动的，池子出栈时所有其中的对象会进行一个release操作。
 
+## 8.3 常见问题？
+
 1. 何时释放
 
 autoreleased 对象是被添加到了当前的 autoreleasepool 中，只有当这个 autoreleasepool 自身 drain 的时候，autoreleasepool 中的 autoreleased 对象才会被 release 。
@@ -510,15 +510,5 @@ autoreleased 对象是被添加到了当前的 autoreleasepool 中，只有当�
 
 4. 为什么有了ARC还要Autorelease Pool？
 
-+ autorelease pool可以有效避免内存峰值
-+ 
+> ARC就是编译器自动添加retain/release/autorelease等语句，保证引用计数的正确性；@autoreleasepool 可以帮助我们自动回收内存，autoreleasepool可以有效避免内存峰值
 
-# 9 LLVM vs. Clang
-
-+ LLVM: C++编写
-  + ⽤用于优化以任意程序语⾔言编写的程序的编译 时间(compile-time)、链接时间(link-time)、运⾏行行时间(run-time)以及空闲时间(idle-time)，对开发 者保持开放，并兼容已有脚本。
-  + 负责代码优化、⽣生成⽬目标程序
-
-+ Clang：基于LLVM，C++编写
-  + Clang是⼀一个⾼高度模块化开发的轻量量级编译器器，它的编译速度快、占⽤用内存⼩小、⾮非常方便进⾏⼆次开发。
-  + 负责词法分析、语法分析、语义分析、⽣生成中间代码

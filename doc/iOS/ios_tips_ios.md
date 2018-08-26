@@ -24,10 +24,10 @@
 
 ## RunLoop的Mode
 
-主线程 RunLoop 包含两个 Mode
+系统默认注册了5个Mode：
 
 + NSDefaultRunLoopMode：属于Fundation，App 平时所处的状态
-+ UITrackingRunLoopMode：属于UIKit，追踪 ScrollView 滑动时的状态
++ UITrackingRunLoopMode：属于UIKit，追踪 ScrollView 滑动时的状态，保证界面滑动时不受其他 Mode 影响
 + UIInitializationRunLoopMode: 在刚启动 App 时第进入的第一个 Mode，启动完成后就不再使用。
 + GSEventReceiveRunLoopMode: 接受系统事件的内部 Mode，通常用不到
 + NSRunLoopCommonModes：属于Fundation，用于标记 mode 是否具有Commen属性
@@ -44,19 +44,19 @@
 
 1. AutoreleasePool: App启动后，Apple 注册了两个Observer，回调都是_wrapRunLoopWithAutoreleasePoolHandler
 
-    + 一个监听进入Loop的事件，其回调会调用 _objc_autoreleasePoolPush() 创建自动释放池
-    + 另一个监听两个事件：
-        + 退出Loop的事件，其回调会调用 _objc_autoreleasePoolPop() 释放自动释放池
-        + 进入休眠状态，其回调会释放旧的自动释放池，并创建新的自动释放池
+  + 一个监听进入Loop的事件，其回调会调用 _objc_autoreleasePoolPush() 创建自动释放池，优先级最高，保证创建释放池发生在其他所有回调之前；
+  + 另一个监听RunLoop的退出和休眠事件，优先级最低，保证其释放池子发生在其他所有回调之后
+    + 退出Loop的事件，其回调会调用 _objc_autoreleasePoolPop() 释放自动释放池
+    + 进入休眠状态，其回调会释放旧的自动释放池，并创建新的自动释放池
 
 2. 事件响应：Apple 注册 Source1 来接收系统事件
 
-    1. 硬件事件(触摸/锁屏/摇晃等)发生后，IOKit生成一个 IOHIDEvent 事件
-    2. SpringBoard 接收并过滤其中接近传感器的事件（按键、触摸、加速等）
-    3. 由mach port 转发给 App进程
-    4. 在Apple注册的 Source1 的毁掉中，使用 _UIApplicationHandleEventQueue() 进行应用内分发
-        + UIGesture、处理屏幕旋转发送给 UIWindow
-        + 通常事件比如 UIButton 点击、touchesBegin/Move/End/Cancel 事件发给对应回调
+  + 硬件事件(触摸/锁屏/摇晃等)发生后，IOKit生成一个 IOHIDEvent 事件
+  + SpringBoard 接收并过滤其中接近传感器的事件（按键、触摸、加速等）
+  + 由mach port 转发给 App进程
+  + 在Apple注册的 Source1 的毁掉中，使用 _UIApplicationHandleEventQueue() 进行应用内分发
+    + UIGesture、处理屏幕旋转发送给 UIWindow
+    + 通常事件比如 UIButton 点击、touchesBegin/Move/End/Cancel 事件发给对应回调
 
 3. 手势识别
 
@@ -109,21 +109,16 @@
 + 对象创建、对象调整、对象销毁
 + 数据的转化
 
-## 4.2 长用优化流程
+## 4.2 常用优化流程
 
 1. 最基本的
   + 重用
   + 布局尽量减少 cell 的层级关系
 
-1. 减少CPU/GPU计算量
-  + cell重用
-  + 减少 cell 布局测层级
+2. 减少CPU/GPU计算量
   + 缓存 cell 的 height 和 frame
+  + 尽量减少绘制时数据的计算
   + 通过图片蒙版实现圆角效果
-
-2. 按需加载cell
-  + cellForRow 只加载可见 cell
-  + 监听 tableview 的快速滚动，保存目标活动范围的前后三行的索引
 
 3. 异步处理cell
   + 异步加载网络图片
@@ -131,11 +126,16 @@
   + 异步绘制 UIView
   + 异步绘制 UILabel
 
+4. 按需加载cell
+  + cellForRow 只加载可见 cell
+  + 监听 tableview 的快速滚动，保存目标活动范围的前后三行的索引
+
+
 # 5、通过bugly快速定位线上crash
 
-  1、项目集成 bugly 上传crash
-  2、每次发布备份 dsym文件
-  3、上传 dsym ，通过符号表程序堆栈进行解析和还原，快速定位crash的代码
+1. 项目集成 bugly 上传crash
+2. 每次发布备份 dsym文件
+3. 上传 dsym ，通过符号表程序堆栈进行解析和还原，快速定位crash的代码
 
 # 6、UIKit
 
@@ -225,11 +225,11 @@ anchorPoint中的X,Y表示锚点的x,y的相对距离比例值
 
 如push，transformation（显式隐式仅仅是针对封装方法的分类，即对象和layer）
 核心动画类中可以直接使用的类有：
-CABasicAnimation 基础动画
-CAKeyframeAnimation 关键帧动画
-CATransition 转场动画
-CAAnimationGroup 组动画
-CASpringAnimation 弹性动画 
++ CABasicAnimation 基础动画
++ CAKeyframeAnimation 关键帧动画
++ CATransition 转场动画
++ CAAnimationGroup 组动画
++ CASpringAnimation 弹性动画 
 
 # 9、启动过程
 1. 链接并加载Framework和静态库
