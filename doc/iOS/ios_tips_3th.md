@@ -113,6 +113,9 @@ AFNetworking 是基于NSURLSessionTask进行封装，支持https，网络数据�
 + AFURLRequestSerialization：对网络请求的Request进行封装
 + AFURLReponseSerialization：对响应体Reponse进行处理
 + AFSecurityPolicy：对服务器证书进行校验
+  + AFSSLPinningModeNone：不做任何验证，只要服务器返回了证书就通过
+  + AFSSLPinningModePublicKey：只验证公钥部分，只要公钥部分一致就验证通过
+  + AFSSLPinningModeCertificate：除了公钥外，其他能容也要一致才能通过验证
 + AFHTTPSessionManager：继承AFURLSessionManager，包含AFURLRequestSerialization、AFURLReponseSerialization、AFSecurityPolicy，封装了http的get、post、put、delete
 
 # 3、SDWebImage
