@@ -66,7 +66,13 @@ HTTP1.1不支持header数据的压缩，HTTP2.0使用HPACK算法对header的数�
 
 对支持HTTP2.0的web server请求数据的时候，服务器会顺便把一些客户端需要的资源一起推送到客户端，免得客户端再次创建连接发送请求到服务器端获取
 
-## 1.5 Https
+## 1.5 Http的 Request 和 Response
+
+![http的request](./res/other_http_request.jpg)
+
+![http的response](./res/other_http_response.jpg)
+
+## 1.6 Https
 
 + HTTPS协议需要到CA申请证书，一般免费证书很少，需要交费。
 + HTTP协议运行在TCP之上，所有传输的内容都是明文，HTTPS运行在SSL/TLS之上，SSL/TLS运行在TCP之上，所有传输的内容都经过加密的。
@@ -77,7 +83,11 @@ TSL/SSL的工作原理
 
 ![TSL/SSL的工作原理](./res/other_http_ssl.jpg)
 
-## 1.6 DNS优化
+## 1.7 WebSocket
+
+WebSocket 是一种网络通信协议，是 HTML5 开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。websocket握手需要借助于http协议，建立连接后通信过程使用websocket协议
+
+## 1.8 DNS优化
 
 1. [DNS预解析](https://help.aliyun.com/document_detail/30144.html)
 
