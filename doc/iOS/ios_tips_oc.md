@@ -304,6 +304,21 @@ typedef struct category_t {
   + 必须有一个类的源码才能为一个类添加extension
 + Category：运行期决议，不可以添加实例变量。因为在运行期，对象的内存布局已经确定，如果添加实例变量就会破坏类的内部布局，这对编译型语言来说是灾难性的
 
+## 4.5 常见问题
+
+1. runtime如何释放weak？
+
+> runtime 对注册的类， 会进行布局，对于 weak 对象会放入一个 hash 表中。 用 weak 指向的对象内存地址作为 key，当此对象的引用计数为0的时候会 dealloc，假如 weak 指向的对象内存地址是a，那么就会以a为键， 在这个 weak 表中搜索，找到所有以a为键的 weak 对象，从而设置为 nil。
+
+2. 能否向编译后得到的类中增加实例变量?
+
+> 不能，编译后的类已经注册在 runtime 中,类结构体中的 objc_ivar_list 实例变量的链表和 instance_size 实例变量的内存大小已经确定, runtime 会调用 class_setvarlayout 或 class_setWeaklvarLayout 来处理 strong``weak 引用.所以不能向存在的类中添加实例变量. 
+
+3. isKindOf 和 isMemberOf的区别？
+
++ isKindOf: 判断一个对象是否是一个类的成员,或者是派生自该类的成员。
++ isMemberOfClass: 判断一个对象是否是当前类的成员。
+
 # 5、[Block](https://blog.ibireme.com/2013/11/27/objc-block/)
 
 block的实现原理是C语言的函数指针，即函数在内存中的地址,通过这个地址可以达到调用函数的目的。Block是NSObject的子类,拥有NSObject的所有属性,所以block对象也有自己的生命周期,生存期间也会被持有和释放。栈上的 block 在 ARC 下会自动复制到堆上
