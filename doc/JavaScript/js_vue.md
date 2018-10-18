@@ -1,5 +1,3 @@
-## Vue
-
 Vue 是一套用于构建用户界面的可以自底向上逐层应用的渐进式框架。
 
 在单文件组件中，整个文件都是一个 CommonJS 模块，里面包含了组件对应的 HTML (template)、组件内的处理逻辑 Javascript (scipte)、组件的样式 CSS (style)。在 script 标签中：
@@ -12,7 +10,7 @@ Vue 是一套用于构建用户界面的可以自底向上逐层应用的渐进�
 - components: 所用到的子组件
 - 生命周期函数: beforeCreate、created、beforeMount、mounted、beforeUpdate、updated、activated、deactivated、beforeDestroy、destroyed
 
-### 1 基本使用
+## 1 基本使用
 
 #### 1.1 模板语法
 
@@ -176,7 +174,7 @@ watch: {
 </base-layout>
 ```
 
-### 2 组件
+## 2 组件
 
 一个组件的 data 选项必须是一个函数，因为每个实例可以维护一份被返回对象的独立的拷贝
 
@@ -265,11 +263,79 @@ template: '<div><stack-overflow></stack-overflow></div>'
 
 这样写模板的话就会导致递归死循环，报错 “max stack size exceeded”。解决办法需要打破死循环，比如 v-if 返回 false。
 
-### 3 过渡 && 动画
+## 3 过渡 && 动画
 
-### 4 混入
+1. 过渡
 
-### 5 官方推荐库
+transition 封装的组件，可以给任何元素和组件添加进入/离开过渡
+
+- v-enter: 进入过渡的开始状态，
+- v-enter-active: 进入过渡的生效时状态
+- v-enter-to: 进入过渡的结束状态
+- v-leave: 离开过渡的开始状态
+- v-leave-active: 离开过渡的生效时状态
+- v-leave-to: 离开过渡的结束状态
+
+对应自定义过渡类名分别为 enter-class、enter-active-class、enter-to-class、leave-class、leave-active-class、leave-to-class
+
+```
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition name="fade">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+```
+
+```
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+```
+
+2. css 过渡（transition） && css 动画（animation）
+
+CSS 动画用法同 CSS 过渡，区别是在动画中 v-enter 类名在节点插入 DOM 后不会立即删除，而是在 animationend 事件触发时删除。
+
+```
+<div id="example-1">
+  <button @click="show = !show">
+    Toggle render
+  </button>
+  <transition name="slide-fade">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+```
+
+```
+.slide-fade-enter-active {
+  transition: all .3s ease; /* 过渡 */
+  /* animation: bounce-in .5s; */ /* 动画 */
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  /* animation: bounce-in .5s; */
+}
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+```
+
+3. 过渡模式
+
+- in-out：新元素先进行过渡，完成之后当前元素过渡离开
+- out-in：当前元素先进行过渡，完成之后新元素过渡进入
+
+## 4 混入
+
+## 5 官方推荐库
 
 Vuex
 
