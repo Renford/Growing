@@ -271,11 +271,11 @@ template: '<div><stack-overflow></stack-overflow></div>'
 
 ### 5 官方推荐库
 
-## Vuex
+Vuex
 
-## vue-router
+vue-router
 
-## MpVue
+MpVue
 
 iview
 wux
