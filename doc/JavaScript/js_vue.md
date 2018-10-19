@@ -335,11 +335,58 @@ CSS 动画用法同 CSS 过渡，区别是在动画中 v-enter 类名在节点�
 
 ## 4 混入
 
+混入 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。当混入对象与组件包含同名选项时，这些选项将以恰当的方式混合。可以通过 Vue.mixin 实现全局混入。 按照同名选项的值可划分为：
+
+- 对象，如 methods、components，被混合为同一个对象，同名取组件的值
+- 同名钩子函数，如 created、mounted，被混合为同一个数组，混入钩子函数在组件钩子函数之前调用
+
+```
+var mixin = {
+  created: function () {
+    console.log('混入对象的钩子被调用')
+  },
+
+  methods: {
+    foo: function () {
+      console.log('foo')
+    },
+    conflicting: function () {
+      console.log('from mixin')
+    }
+  }
+}
+
+new Vue({
+  mixins: [mixin],
+  created: function () {
+    console.log('组件钩子被调用')
+  },
+
+  methods: {
+    bar: function () {
+      console.log('bar')
+    },
+    conflicting: function () {
+      console.log('from self')
+    }
+  }
+})
+
+// => "混入对象的钩子被调用"
+// => "组件钩子被调用"
+
+vm.foo() // => "foo"
+vm.bar() // => "bar"
+vm.conflicting() // => "from self"
+```
+
 ## 5 官方推荐库
 
 Vuex
 
 vue-router
+
+vue-loader
 
 MpVue
 
