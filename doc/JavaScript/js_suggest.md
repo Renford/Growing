@@ -172,3 +172,19 @@ var array = [1,2,3,4]
 delete array[1] // [1, ,3,4]
 array.splice(1) // [2,3,4]
 ```
+
+14、关于 typeof Array 的结果是 object。
+
+> typeof 方法只能判断基本类型类型（number, string, undefined，boolean)，而 Array、Date、 RegExp、null 等都只是 object 的扩展，一般使用`instanceof`来判断。
+
+```
+const arr = [1,2,3]
+
+typeof arr // 'object'
+arr instanceof Array // true
+```
+
+15、关于 foreach
+
+- 没有 break，无法在所有元素都传递给调用的函数之前终止遍历。可以使用 try-catch 结束循环
+- awiat 不起作用，无论 await 是在 foreach 里面还是 await 后面接 foreach 都不行
