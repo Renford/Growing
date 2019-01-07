@@ -188,3 +188,30 @@ arr instanceof Array // true
 
 - 没有 break，无法在所有元素都传递给调用的函数之前终止遍历。可以使用 try-catch 结束循环
 - awiat 不起作用，无论 await 是在 foreach 里面还是 await 后面接 foreach 都不行
+
+16、常用深拷贝 `JSON.parse(JSON.stringify(object))` 的问题
+
+- 会忽略 undefined
+- 会忽略 symbol
+- 不能序列化函数
+- 不能解决循环引用的对象
+
+```
+let obj = {
+    name: 'aaaa',
+    a: undefined,
+    b: Symbol('muyiy'),
+    c: function() {}
+}
+console.log(obj);
+// {
+//     name: "muyiy",
+//     a: undefined,
+//     b: Symbol(muyiy),
+//     c: ƒ ()
+// }
+
+let b = JSON.parse(JSON.stringify(obj));
+console.log(b);
+// {name: "aaaa"}
+```
